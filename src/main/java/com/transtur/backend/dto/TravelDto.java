@@ -1,17 +1,17 @@
 package com.transtur.backend.dto;
 
 import java.time.LocalDate;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.time.LocalTime;
 
+import lombok.*;
+
+@AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 public class TravelDto {
-	String id;
-	String choffer;
-	String nombre;
-	LocalDate fechaInicio;
-	LocalDate fechaFin;
+	private String id;
+	private String choffer;
+	private String pasajero;
+	private LocalDate fecha;
+	private LocalTime hour;
 }

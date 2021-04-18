@@ -1,16 +1,23 @@
 package com.transtur.backend.model;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
-import lombok.Builder;
-import lombok.Getter;
+import com.querydsl.core.annotations.QueryEntity;
+import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Getter
-@Builder
+@Data
+@ToString
+@NoArgsConstructor
+@QueryEntity
+@Document(collection = "travel")
 public class Travel {
+	@Id
 	String id;
-	String choffer;
-	String nombre;
-	LocalDate fechaInicio;
-	LocalDate fechaFin;
+	String chofer;
+	String pasajero;
+	LocalDate fecha;
+	LocalTime hora;
 }
