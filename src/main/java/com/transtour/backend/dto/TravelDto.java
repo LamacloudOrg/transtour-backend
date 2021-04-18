@@ -1,4 +1,4 @@
-package com.transtur.backend.dto;
+package com.transtour.backend.dto;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -10,8 +10,8 @@ import lombok.*;
 @Data
 public class TravelDto {
 	private String id;
-	private String choffer;
+	private String chofer;
 	private String pasajero;
 	private LocalDate fecha;
-	private LocalTime hour;
+	private LocalTime hora;
 }

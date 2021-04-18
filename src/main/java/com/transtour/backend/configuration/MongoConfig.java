@@ -1,4 +1,4 @@
-package com.transtur.backend.configuration;
+package com.transtour.backend.configuration;
 
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
@@ -9,10 +9,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.MongoDatabaseFactory;
 import org.springframework.data.mongodb.MongoTransactionManager;
 import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 @Configuration
-@EnableMongoRepositories(basePackages = "com.transtur.backend.repository")
 public class MongoConfig extends AbstractMongoClientConfiguration {
 
     @Bean
@@ -22,7 +20,7 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
 
     @Override
     protected String getDatabaseName() {
-        return "local";
+        return "transtour";
     }
 
     @Override

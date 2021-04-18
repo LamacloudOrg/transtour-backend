@@ -1,4 +1,4 @@
-package com.transtur.backend;
+package com.transtour.backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -9,8 +9,10 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 
 @EnableAutoConfiguration
 @SpringBootApplication
+//@EnableSwagger2
 @EnableDiscoveryClient
 @EnableFeignClients
+@EnableMongoRepositories(basePackages = "com.transtour.backend.repository")
 public class BackendApplication {
 
 	public static void main(String[] args) {
