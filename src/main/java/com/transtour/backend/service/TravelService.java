@@ -4,7 +4,9 @@ import com.querydsl.core.types.Predicate;
 import com.transtour.backend.exception.NotFoundException;
 import com.transtour.backend.exception.TravelExistException;
 import com.transtour.backend.model.QTravel;
+import com.transtour.backend.repository.INotification;
 import com.transtour.backend.repository.TravelRepository;
+import net.bytebuddy.implementation.Implementation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -19,14 +21,18 @@ import java.util.concurrent.CompletableFuture;
 public class TravelService {
 
 	@Autowired
-	Mapper mapper;
+	private Mapper mapper;
 
 	@Autowired
 	@Qualifier("repo")
-	TravelRepository repository;
+	private TravelRepository repository;
 
-	public CompletableFuture<Void> create(TravelDto travelDto) throws Exception {
-		CompletableFuture<Void> completableFuture  = CompletableFuture.runAsync( ()-> {
+	@Autowired
+	@Qualifier("NotificationClient")
+	private INotification notificationClient;
+
+	public CompletableFuture<Object> create(TravelDto travelDto) throws Exception {
+		CompletableFuture<String> completableFuture  = CompletableFuture.supplyAsync( ()-> {
 
 			QTravel travel = new QTravel("travel");
 			Predicate dateAndHour = travel.fecha.eq(travelDto.getFecha()).and(travel.hora.eq(travelDto.getHora()));
@@ -36,8 +42,13 @@ public class TravelService {
 			Travel newTravel = mapper.map(travelDto,Travel.class);
 			repository.save(newTravel);
 
+			return "se creo el viaje para el cofher "+travelDto.getChofer();
+
 		});
-		return completableFuture;
+
+		CompletableFuture<Object> notified = completableFuture.thenApply(s-> sendNotification(s));
+
+		return notified;
 	}
 
 	public CompletableFuture<TravelDto> find(String id) throws Exception {
@@ -50,6 +61,20 @@ public class TravelService {
 			TravelDto travelDTO = mapper.map(travelExist.get(),TravelDto.class);
 			return travelDTO;
 		});
+
 		return completableFuture;
 	}
+
+	public CompletableFuture<Void> sendNotification(String message){
+
+		CompletableFuture<Void> completableFuture = CompletableFuture.runAsync(
+				()->{
+					notificationClient.sendNotification(message);
+				}
+		);
+
+		return completableFuture;
+
+	}
+
 }
