@@ -1,6 +1,6 @@
-package com.transtour.backend.repository;
+package com.transtour.backend.travel.repository;
 
-import com.transtour.backend.model.Travel;
+import com.transtour.backend.travel.model.Travel;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;

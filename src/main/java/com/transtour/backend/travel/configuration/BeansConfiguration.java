@@ -1,11 +1,9 @@
-package com.transtour.backend.configuration;
+package com.transtour.backend.travel.configuration;
 
 import com.github.dozermapper.core.DozerBeanMapperBuilder;
 import com.github.dozermapper.core.Mapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
@@ -36,7 +34,7 @@ public class BeansConfiguration {
 	public Docket productApi() {
 		return new Docket(DocumentationType.SWAGGER_2)
 				.select()
-				.apis(RequestHandlerSelectors.basePackage("com.transtur.backend.controller"))
+				.apis(RequestHandlerSelectors.basePackage("com.transtour.backend.travel.controller"))
 				.paths(PathSelectors.any())
 				.build();
 	}

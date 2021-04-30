@@ -1,8 +1,8 @@
-package com.transtour.backend;
+package com.transtour.backend.travel;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
@@ -11,8 +11,9 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @SpringBootApplication
 //@EnableSwagger2
 @EnableDiscoveryClient
+@EnableCircuitBreaker
 @EnableFeignClients
-@EnableMongoRepositories(basePackages = "com.transtour.backend.repository")
+@EnableMongoRepositories(basePackages = "com.transtour.backend.travel.repository")
 public class BackendApplication {
 
 	public static void main(String[] args) {

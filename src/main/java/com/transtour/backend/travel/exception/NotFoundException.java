@@ -1,4 +1,4 @@
-package com.transtour.backend.exception;
+package com.transtour.backend.travel.exception;
 
 public class NotFoundException extends RuntimeException{
 

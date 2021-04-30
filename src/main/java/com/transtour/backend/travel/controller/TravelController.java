@@ -1,14 +1,14 @@
-package com.transtour.backend.controller;
+package com.transtour.backend.travel.controller;
 
-import com.transtour.backend.service.TravelService;
+import com.transtour.backend.travel.dto.TravelDto;
+import com.transtour.backend.travel.service.TravelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.transtour.backend.dto.TravelDto;
+
 import java.time.LocalDate;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
 import java.util.function.Function;
 
 
@@ -23,14 +23,19 @@ public class TravelController {
 	public String gretting() {
 		return "hello";
 	}
+
+	@PostMapping("/notify")
+	public CompletableFuture<ResponseEntity> sendEmail() throws Exception {
+		return service.sendNotification("probando desde Travell Controller").thenApply(ResponseEntity::ok);
+	}
 	
 	@PostMapping("/create")
-	public CompletableFuture<ResponseEntity<?>> create(@RequestBody TravelDto travel) throws Exception {
+	public CompletableFuture<ResponseEntity> create(@RequestBody TravelDto travel) throws Exception {
 		return service.create(travel).thenApply(handlerTraverlCreation);
 	}
 
 	@GetMapping("/{id}")
-	public CompletableFuture<ResponseEntity<?>> findById(@PathVariable String id) throws Exception {
+	public CompletableFuture<ResponseEntity> findById(@PathVariable String id) throws Exception {
 		 return service.find(id).thenApply(handlerFinById);
 	}
 

@@ -1,6 +1,6 @@
-package com.transtour.backend.exception;
+package com.transtour.backend.travel.exception;
 
-import com.transtour.backend.dto.ResponseDto;
+import com.transtour.backend.travel.dto.ResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

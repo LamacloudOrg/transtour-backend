@@ -1,8 +1,7 @@
-package com.transtour.backend.dto;
+package com.transtour.backend.travel.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.http.HttpStatus;
 
 import java.time.LocalDateTime;
 @NoArgsConstructor

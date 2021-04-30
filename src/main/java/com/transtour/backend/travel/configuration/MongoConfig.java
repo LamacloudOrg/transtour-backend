@@ -1,4 +1,4 @@
-package com.transtour.backend.configuration;
+package com.transtour.backend.travel.configuration;
 
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
