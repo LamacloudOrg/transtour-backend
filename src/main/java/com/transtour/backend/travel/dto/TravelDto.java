@@ -16,4 +16,5 @@ public class TravelDto {
 	private String pasajero;
 	private LocalDate fecha;
 	private LocalTime hora;
+	private String direccion;
 }

@@ -14,6 +14,7 @@ import java.util.function.Function;
 
 @RestController
 @RequestMapping(path = "/v1/travel")
+@CrossOrigin("*")
 public class TravelController {
 	
 	@Autowired

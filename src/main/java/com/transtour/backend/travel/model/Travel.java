@@ -23,6 +23,7 @@ public class Travel implements Serializable {
 	String pasajero;
 	LocalDate fecha;
 	LocalTime hora;
+	String direccion;
 	@CreatedDate
 	LocalDateTime crate_at;
 }
