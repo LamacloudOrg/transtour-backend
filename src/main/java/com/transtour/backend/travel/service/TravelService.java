@@ -15,9 +15,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
@@ -90,6 +92,17 @@ public class TravelService {
 				()->{
 					log.error("No se pudo notificar el viaje "+message.split("-")[0]);	}
 		);
+		return completableFuture;
+	}
+
+
+	public CompletableFuture<Page<Travel>> findAll(Pageable page){
+
+		CompletableFuture<Page<Travel>> completableFuture  = CompletableFuture.supplyAsync( ()-> {
+			Page<Travel> list = repository.findAll(page);
+			return list;
+		});
+
 		return completableFuture;
 	}
 

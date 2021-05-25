@@ -3,6 +3,7 @@ package com.transtour.backend.travel.controller;
 import com.transtour.backend.travel.dto.TravelDto;
 import com.transtour.backend.travel.service.TravelService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -43,6 +44,12 @@ public class TravelController {
 	@GetMapping("/search")
 	public ResponseEntity<?> findByDate(@RequestParam(name = "fecha_creacio") LocalDate date ) throws Exception {
 		return new ResponseEntity<TravelDto>(HttpStatus.NOT_IMPLEMENTED);
+
+	}
+
+	@GetMapping("/list")
+	public CompletableFuture<ResponseEntity> list (Pageable pageable) throws Exception {
+		return service.findAll(pageable).thenApply(handlerFinById);
 
 	}
 
