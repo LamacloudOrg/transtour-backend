@@ -52,22 +52,24 @@ public class TravelService {
 	@Transactional
 	private String createTravel(TravelDto travelDto){
 		QTravel travel = new QTravel("travel");
-		Predicate dateAndHour = travel.fecha.eq(travelDto.getFecha()).and(travel.hora.eq(travelDto.getHora()));
+
+		//TODO ojo la logica de negocio, puede haber mas de un viaje para un mismo lugar de origen, destino, fecha, hoora, puede ser un contingente.
+		Predicate dateAndHour = travel.dateCreated.eq(travelDto.getDateCreated()).and(travel.time.eq(travelDto.getTime()));
 
 		Optional<Travel> travelExist = repository.findOne(dateAndHour);
 		if (travelExist.isPresent()) throw new TravelExistException("el viaje ya existe");
 		Travel newTravel = mapper.map(travelDto, Travel.class);
 		repository.save(newTravel);
 
-		return newTravel.getId() + "-" + "se creo el viaje para el cofher " + travelDto.getChofer();
+		return newTravel.getOrderNumber() + "-" + "se creo el viaje para el cofher " + travelDto.getCarDriver();
 	}
 
-	public CompletableFuture<TravelDto> find(String id) throws Exception {
+	public CompletableFuture<TravelDto> find(String orderNumber) throws Exception {
 		CompletableFuture<TravelDto> completableFuture  = CompletableFuture.supplyAsync( ()-> {
 
 			QTravel travel = new QTravel("travel");
-			Predicate byId = travel.id.eq(id);
-			Optional<Travel> travelExist = repository.findOne(byId);
+			Predicate byOrderNumber = travel.orderNumber.eq(orderNumber);
+			Optional<Travel> travelExist = repository.findOne(byOrderNumber);
 			if(!travelExist.isPresent()) throw  new NotFoundException("no existe el viaje");
 			TravelDto travelDTO = mapper.map(travelExist.get(),TravelDto.class);
 			return travelDTO;

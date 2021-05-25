@@ -3,13 +3,10 @@ package com.transtour.backend.travel.model;
 import com.querydsl.core.annotations.QueryEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @NoArgsConstructor
@@ -17,13 +14,23 @@ import java.time.LocalTime;
 @QueryEntity
 @Document("travel")
 public class Travel implements Serializable {
-	@Id
-	String id;
-	String chofer;
-	String pasajero;
-	LocalDate fecha;
-	LocalTime hora;
-	String direccion;
-	@CreatedDate
-	LocalDateTime crate_at;
+
+	private String orderNumber;
+	private LocalDate dateCreated;
+	private String car;
+	private String carDriver;
+	private LocalTime time;
+	private String company;
+	private String bc;
+	private String passenger;
+	private String reserveNumber;
+	private String originAddress;
+	private String destinyAddress;
+	private String observation;
+	private String amount;
+	private String whitingTime;
+	private String toll;
+	private String parkingAmount;
+	private String taxForReturn;
+	private String totalAmount;
 }

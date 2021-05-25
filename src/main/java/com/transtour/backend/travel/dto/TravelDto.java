@@ -11,10 +11,23 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @Data
 public class TravelDto {
-	private String id;
-	private String chofer;
-	private String pasajero;
-	private LocalDate fecha;
-	private LocalTime hora;
-	private String direccion;
+
+	private String orderNumber;
+	private LocalDate dateCreated;
+	private String car;
+	private String carDriver;
+	private LocalTime time;
+	private String company;
+	private String bc;
+	private String passenger;
+	private String reserveNumber;
+	private String originAddress;
+	private String destinyAddress;
+	private String observation;
+	private String amount;
+	private String whitingTime;
+	private String toll;
+	private String parkingAmount;
+	private String taxForReturn;
+	private String totalAmount;
 }
