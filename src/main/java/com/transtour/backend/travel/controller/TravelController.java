@@ -36,8 +36,10 @@ public class TravelController {
 		return service.create(travel).thenApply(handlerTraverlCreation);
 	}
 
+	//TODO Implementar generacion de orderNumber, poible solucion con un bean de session.
+
 	@PostMapping("/aprove")
-	public CompletableFuture<ResponseEntity> aprove(String orderNumber) throws Exception {
+	public CompletableFuture<ResponseEntity> aprove(@RequestBody String orderNumber) throws Exception {
 		return service.aprove(orderNumber).thenApply(handlerTraverlCreation);
 	}
 

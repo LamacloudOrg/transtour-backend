@@ -124,6 +124,7 @@ public class TravelService {
 			Optional<Travel> travelExist = repository.findOne(byOrderNumber);
 			if(!travelExist.isPresent()) throw  new NotFoundException("El viaje no fue creado");
 			travelExist.get().setStatus(TravelStatus.APROVED);
+			repository.save(travelExist.get());
 			return travelExist.get();
 			});
 

@@ -3,6 +3,7 @@ package com.transtour.backend.travel.model;
 import com.querydsl.core.annotations.QueryEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
@@ -14,7 +15,8 @@ import java.time.LocalTime;
 @QueryEntity
 @Document("travel")
 public class Travel implements Serializable {
-
+	@Id
+	private String id;
 	private String orderNumber;
 	private TravelStatus status;
 	private LocalDate dateCreated;
