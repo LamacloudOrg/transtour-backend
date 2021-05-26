@@ -141,7 +141,7 @@ public class TravelService {
 
 		CompletableFuture<Travel> completableFuture = CompletableFuture.supplyAsync(
 				()->{
-					voucher.createVoucher(travel.getOrderNumber());
+					voucher.createVoucher(travel);
 					return travel;
 				}
 		);
