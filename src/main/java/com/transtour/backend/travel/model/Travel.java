@@ -16,6 +16,7 @@ import java.time.LocalTime;
 public class Travel implements Serializable {
 
 	private String orderNumber;
+	private TravelStatus status;
 	private LocalDate dateCreated;
 	private String car;
 	private String carDriver;

@@ -9,7 +9,9 @@ import com.transtour.backend.travel.exception.NotFoundException;
 import com.transtour.backend.travel.exception.TravelExistException;
 import com.transtour.backend.travel.model.QTravel;
 import com.transtour.backend.travel.model.Travel;
+import com.transtour.backend.travel.model.TravelStatus;
 import com.transtour.backend.travel.repository.INotification;
+import com.transtour.backend.travel.repository.IVoucher;
 import com.transtour.backend.travel.repository.TravelRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 import java.util.concurrent.Future;
 
 @Service
@@ -39,6 +42,10 @@ public class TravelService {
 	@Autowired
 	@Qualifier("NotificationClient")
 	private INotification notificationClient;
+
+	@Autowired
+	@Qualifier("VoucherClient")
+	private IVoucher voucher;
 
 	public CompletableFuture<Object> create(TravelDto travelDto) throws Exception {
 		CompletableFuture<String> completableFuture = CompletableFuture.supplyAsync(() -> {
@@ -59,6 +66,7 @@ public class TravelService {
 		Optional<Travel> travelExist = repository.findOne(dateAndHour);
 		if (travelExist.isPresent()) throw new TravelExistException("el viaje ya existe");
 		Travel newTravel = mapper.map(travelDto, Travel.class);
+		newTravel.setStatus(TravelStatus.CREATED);
 		repository.save(newTravel);
 
 		return newTravel.getOrderNumber() + "-" + "se creo el viaje para el cofher " + travelDto.getCarDriver();
@@ -107,5 +115,39 @@ public class TravelService {
 
 		return completableFuture;
 	}
+
+	public CompletableFuture<Object> aprove(String orderNumber) {
+
+		CompletableFuture<Travel> cf1 = CompletableFuture.supplyAsync(() -> {
+			QTravel travel = new QTravel("travel");
+			Predicate byOrderNumber = travel.orderNumber.eq(orderNumber).and(travel.status.eq(TravelStatus.CREATED));
+			Optional<Travel> travelExist = repository.findOne(byOrderNumber);
+			if(!travelExist.isPresent()) throw  new NotFoundException("El viaje no fue creado");
+			travelExist.get().setStatus(TravelStatus.APROVED);
+			return travelExist.get();
+			});
+
+		CompletableFuture<Object> cf2 = cf1.thenApply(travel->{
+				return this.creteVoucer(travel);
+		});
+
+		//TODO falta agregar la implementacion para notificar al chofer.
+
+		return cf2;
+
+	}
+
+	private CompletableFuture<Travel> creteVoucer(Travel travel){
+
+		CompletableFuture<Travel> completableFuture = CompletableFuture.supplyAsync(
+				()->{
+					voucher.createVoucher(travel.getOrderNumber());
+					return travel;
+				}
+		);
+		return completableFuture;
+	}
+
+
 
 }

@@ -36,6 +36,11 @@ public class TravelController {
 		return service.create(travel).thenApply(handlerTraverlCreation);
 	}
 
+	@PostMapping("/aprove")
+	public CompletableFuture<ResponseEntity> aprove(String orderNumber) throws Exception {
+		return service.aprove(orderNumber).thenApply(handlerTraverlCreation);
+	}
+
 	@GetMapping("/{id}")
 	public CompletableFuture<ResponseEntity> findById(@PathVariable String id) throws Exception {
 		 return service.find(id).thenApply(handlerFinById);
