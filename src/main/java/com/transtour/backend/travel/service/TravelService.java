@@ -13,6 +13,7 @@ import com.transtour.backend.travel.model.TravelStatus;
 import com.transtour.backend.travel.repository.INotification;
 import com.transtour.backend.travel.repository.IVoucher;
 import com.transtour.backend.travel.repository.TravelRepository;
+import com.transtour.backend.travel.util.OrderNumberUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,16 @@ public class TravelService {
 	@Autowired
 	@Qualifier("VoucherClient")
 	private IVoucher voucher;
+
+	@Autowired
+	OrderNumberUtil orderNumberUtil;
+
+	public CompletableFuture<Long> generateNumber(){
+		CompletableFuture<Long> completableFuture = CompletableFuture.supplyAsync(() -> {
+			return orderNumberUtil.getNumber();
+		});
+		return completableFuture;
+	}
 
 	public CompletableFuture<Object> create(TravelDto travelDto) throws Exception {
 		CompletableFuture<String> completableFuture = CompletableFuture.supplyAsync(() -> {

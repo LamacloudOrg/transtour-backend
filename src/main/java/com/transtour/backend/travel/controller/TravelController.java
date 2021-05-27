@@ -26,11 +26,13 @@ public class TravelController {
 		return "hello";
 	}
 
-	@PostMapping("/notify")
-	public CompletableFuture<ResponseEntity> sendEmail() throws Exception {
-		return service.sendNotification("probando desde Travell Controller").thenApply(ResponseEntity::ok);
+
+	@GetMapping("/orederNumber")
+	public CompletableFuture<ResponseEntity> getOrderNumber() throws Exception {
+		return service.generateNumber().thenApply(handlerFinById);
 	}
-	
+
+
 	@PostMapping("/create")
 	public CompletableFuture<ResponseEntity> create(@RequestBody TravelDto travel) throws Exception {
 		return service.create(travel).thenApply(handlerTraverlCreation);
