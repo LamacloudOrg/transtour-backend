@@ -4,6 +4,7 @@ import com.github.dozermapper.core.Mapper;
 //import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.querydsl.core.types.Predicate;
+import com.transtour.backend.travel.dto.NotificationMobileDTO;
 import com.transtour.backend.travel.dto.TravelDto;
 import com.transtour.backend.travel.exception.NotFoundException;
 import com.transtour.backend.travel.exception.TravelExistException;
@@ -22,8 +23,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.List;
-import java.util.Optional;
+
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.Future;
@@ -143,9 +144,11 @@ public class TravelService {
 				return this.creteVoucer(travel);
 		});
 
-		//TODO falta agregar la implementacion para notificar al chofer.
+		CompletableFuture<Object> cf3 = cf2.thenApply(travel->{
+			return this.sendNotification((Travel) travel);
+		});
 
-		return cf2;
+		return cf3;
 
 	}
 
@@ -160,6 +163,23 @@ public class TravelService {
 		return completableFuture;
 	}
 
+	private CompletableFuture<Travel> sendNotification(Travel travel){
+		CompletableFuture<Travel> completableFuture = CompletableFuture.supplyAsync(
+				()->{
+					NotificationMobileDTO notif = new NotificationMobileDTO();
+					notif.setTarget("");
+					notif.setTitle("Nuevo viaje");
+					notif.setBody("Se le asigno un nuevo viaje");
 
+					HashMap<String, String> data = new HashMap<String, String>();
+					data.put("clave","valor");
+					notif.setData(data);
+
+					notificationClient.sendNotificationMobile(notif, "1234");
+					return travel;
+				}
+		);
+		return completableFuture;
+	}
 
 }
