@@ -1,10 +1,8 @@
 package com.transtour.backend.travel.service;
 
 import com.github.dozermapper.core.Mapper;
-//import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.querydsl.core.types.Predicate;
-import com.transtour.backend.travel.dto.NotificationMobileDTO;
+import com.transtour.backend.travel.dto.TravelNotificationMobileDTO;
 import com.transtour.backend.travel.dto.TravelDto;
 import com.transtour.backend.travel.exception.NotFoundException;
 import com.transtour.backend.travel.exception.TravelExistException;
@@ -14,6 +12,7 @@ import com.transtour.backend.travel.model.TravelStatus;
 import com.transtour.backend.travel.repository.INotification;
 import com.transtour.backend.travel.repository.IVoucher;
 import com.transtour.backend.travel.repository.TravelRepository;
+import com.transtour.backend.travel.util.Constants;
 import com.transtour.backend.travel.util.OrderNumberUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionStage;
 import java.util.concurrent.Future;
 
 @Service
@@ -166,16 +164,25 @@ public class TravelService {
 	private CompletableFuture<Travel> sendNotification(Travel travel){
 		CompletableFuture<Travel> completableFuture = CompletableFuture.supplyAsync(
 				()->{
-					NotificationMobileDTO notif = new NotificationMobileDTO();
-					notif.setTarget("");
-					notif.setTitle("Nuevo viaje");
-					notif.setBody("Se le asigno un nuevo viaje");
+					TravelNotificationMobileDTO travelNotificationMobileDTO = new TravelNotificationMobileDTO();
+					travelNotificationMobileDTO.setTo("c49-po9IS_ypAPNDymOCuh:APA91bHa8-9MtXZtKqJbHRHxAy38BZWCouAVxwI5bN7NxCUD9L0rPuSZ9Z4DoDhhVQKizcvSv6whDwrMuQbDtxdaufbOeTIF59PZyPRIW-z0aHBEqfwPfp4_D9UzJaIG7fcs5E-4CChI");
 
-					HashMap<String, String> data = new HashMap<String, String>();
-					data.put("clave","valor");
-					notif.setData(data);
+					Map<String, String> notification = new HashMap<>();
+					notification.put(Constants.TITTLE, Constants.TITTLE_NEW_MESSAGE);
+					notification.put(Constants.BODY, Constants.BODY_NEW_MESSAGE);
 
-					notificationClient.sendNotificationMobile(notif, "1234");
+					Map<String, String> data = new HashMap<>();
+					data.put(Constants.ORIGIN, travel.getOriginAddress());
+					data.put(Constants.DESTINY, travel.getDestinyAddress());
+					data.put(Constants.TIME, travel.getTime().toString());
+					data.put(Constants.DATE, travel.getDateCreated().toString());
+					data.put(Constants.PASSENGER, travel.getPassenger());
+					data.put(Constants.OBSERVATION, travel.getObservation());
+
+					travelNotificationMobileDTO.setNotification(notification);
+					travelNotificationMobileDTO.setData(data);
+
+					notificationClient.sendNotificationMobile(travelNotificationMobileDTO, "1234");
 					return travel;
 				}
 		);

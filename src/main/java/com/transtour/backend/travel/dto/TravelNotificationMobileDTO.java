@@ -5,10 +5,9 @@ import lombok.Data;
 import java.util.Map;
 
 @Data
-public class NotificationMobileDTO {
+public class TravelNotificationMobileDTO {
 
-    private String target;
-    private String title;
-    private String body;
+    private String to;
+    private Map<String, String> notification;
     private Map<String, String> data;
 }
