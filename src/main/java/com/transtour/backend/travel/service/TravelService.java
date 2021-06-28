@@ -165,7 +165,7 @@ public class TravelService {
 		CompletableFuture<Travel> completableFuture = CompletableFuture.supplyAsync(
 				()->{
 					TravelNotificationMobileDTO travelNotificationMobileDTO = new TravelNotificationMobileDTO();
-					travelNotificationMobileDTO.setTo("c49-po9IS_ypAPNDymOCuh:APA91bHa8-9MtXZtKqJbHRHxAy38BZWCouAVxwI5bN7NxCUD9L0rPuSZ9Z4DoDhhVQKizcvSv6whDwrMuQbDtxdaufbOeTIF59PZyPRIW-z0aHBEqfwPfp4_D9UzJaIG7fcs5E-4CChI");
+					travelNotificationMobileDTO.setTo("");
 
 					Map<String, String> notification = new HashMap<>();
 					notification.put(Constants.TITTLE, Constants.TITTLE_NEW_MESSAGE);
@@ -178,11 +178,12 @@ public class TravelService {
 					data.put(Constants.DATE, travel.getDateCreated().toString());
 					data.put(Constants.PASSENGER, travel.getPassenger());
 					data.put(Constants.OBSERVATION, travel.getObservation());
+					data.put(Constants.CAR_DRIVER, travel.getCarDriver());
 
 					travelNotificationMobileDTO.setNotification(notification);
 					travelNotificationMobileDTO.setData(data);
 
-					notificationClient.sendNotificationMobile(travelNotificationMobileDTO, "1234");
+					notificationClient.sendNotificationMobile(travelNotificationMobileDTO);
 					return travel;
 				}
 		);

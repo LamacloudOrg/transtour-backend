@@ -16,6 +16,5 @@ public interface INotification {
     Void sendNotification(@RequestBody String message);
 
     @RequestMapping(method=RequestMethod.POST,value = "/v1/notification/sendMessageMobile")
-    Void sendNotificationMobile(@RequestBody TravelNotificationMobileDTO travelNotificationMobileDto,
-                                @RequestParam String token);
+    Void sendNotificationMobile(@RequestBody TravelNotificationMobileDTO travelNotificationMobileDto);
 }
