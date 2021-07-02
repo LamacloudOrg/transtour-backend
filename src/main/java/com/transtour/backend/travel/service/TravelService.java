@@ -126,7 +126,7 @@ public class TravelService {
 		return completableFuture;
 	}
 
-	public CompletableFuture<Object> aprove(String orderNumber) {
+	public CompletableFuture<Travel> aprove(String orderNumber) {
 
 		CompletableFuture<Travel> cf1 = CompletableFuture.supplyAsync(() -> {
 			QTravel travel = new QTravel("travel");
@@ -138,31 +138,33 @@ public class TravelService {
 			return travelExist.get();
 			});
 
-		CompletableFuture<Object> cf2 = cf1.thenApply(travel->{
-				return this.creteVoucer(travel);
+		CompletableFuture<Travel> cf2 = cf1.thenApply(travel->{
+				 this.creteVoucer(travel);
+				return travel;
 		});
 
-		CompletableFuture<Object> cf3 = cf2.thenApply(travel->{
-			return this.sendNotification((Travel) travel);
+		CompletableFuture<Travel> cf3 = cf2.thenApply(travel->{
+			 this.sendNotification(travel);
+			 return travel;
 		});
 
 		return cf3;
 
 	}
 
-	private CompletableFuture<Travel> creteVoucer(Travel travel){
+	private CompletableFuture<Void> creteVoucer(Travel travel){
 
-		CompletableFuture<Travel> completableFuture = CompletableFuture.supplyAsync(
+		CompletableFuture<Void> completableFuture = CompletableFuture.runAsync(
 				()->{
 					voucher.createVoucher(travel);
-					return travel;
+					//return travel;
 				}
 		);
 		return completableFuture;
 	}
 
-	private CompletableFuture<Travel> sendNotification(Travel travel){
-		CompletableFuture<Travel> completableFuture = CompletableFuture.supplyAsync(
+	private CompletableFuture<Void> sendNotification(Travel travel){
+		CompletableFuture<Void> completableFuture = CompletableFuture.runAsync(
 				()->{
 					TravelNotificationMobileDTO travelNotificationMobileDTO = new TravelNotificationMobileDTO();
 					travelNotificationMobileDTO.setTo("");
@@ -184,7 +186,7 @@ public class TravelService {
 					travelNotificationMobileDTO.setData(data);
 
 					notificationClient.sendNotificationMobile(travelNotificationMobileDTO);
-					return travel;
+					//return travel;
 				}
 		);
 		return completableFuture;
