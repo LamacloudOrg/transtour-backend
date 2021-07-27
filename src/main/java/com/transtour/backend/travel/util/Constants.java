@@ -15,4 +15,5 @@ public class Constants {
     public static final String TITTLE_NEW_MESSAGE = "Nuevo Viaje";
     public static final String BODY_NEW_MESSAGE = "Tiene asignado un nuevo viaje";
 
+    public static final String ID = "id";
 }

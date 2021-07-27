@@ -174,6 +174,7 @@ public class TravelService {
 					notification.put(Constants.BODY, Constants.BODY_NEW_MESSAGE);
 
 					Map<String, String> data = new HashMap<>();
+					data.put(Constants.ID, travel.getOrderNumber());
 					data.put(Constants.ORIGIN, travel.getOriginAddress());
 					data.put(Constants.DESTINY, travel.getDestinyAddress());
 					data.put(Constants.TIME, travel.getTime().toString());
