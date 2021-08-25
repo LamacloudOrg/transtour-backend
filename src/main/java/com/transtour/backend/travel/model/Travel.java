@@ -36,4 +36,5 @@ public class Travel implements Serializable {
 	private String parkingAmount;
 	private String taxForReturn;
 	private String totalAmount;
+
 }
