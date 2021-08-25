@@ -1,6 +1,7 @@
 package com.transtour.backend.travel.controller;
 
 import com.transtour.backend.travel.dto.TravelDto;
+import com.transtour.backend.travel.dto.SaveTaxesDTO;
 import com.transtour.backend.travel.service.TravelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -60,6 +61,11 @@ public class TravelController {
 	public CompletableFuture<ResponseEntity> list (Pageable pageable) throws Exception {
 		return service.findAll(pageable).thenApply(handlerFinById);
 
+	}
+
+	@PostMapping("/saveTaxes")
+	public CompletableFuture<ResponseEntity> saveTaxes(@RequestBody SaveTaxesDTO saveTaxesDTO) throws Exception {
+		return service.saveTaxes(saveTaxesDTO).thenApply(handlerTraverlCreation);
 	}
 
 	private static Function<Object,ResponseEntity> handlerTraverlCreation = s->{
