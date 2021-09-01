@@ -4,6 +4,7 @@ import com.github.dozermapper.core.Mapper;
 import com.querydsl.core.types.Predicate;
 import com.transtour.backend.travel.dto.TravelNotificationMobileDTO;
 import com.transtour.backend.travel.dto.TravelDto;
+import com.transtour.backend.travel.dto.SaveTaxesDTO;
 import com.transtour.backend.travel.exception.NotFoundException;
 import com.transtour.backend.travel.exception.TravelExistException;
 import com.transtour.backend.travel.model.QTravel;
@@ -191,6 +192,25 @@ public class TravelService {
 				}
 		);
 		return completableFuture;
+	}
+
+
+	public CompletableFuture<Travel> saveTaxes (SaveTaxesDTO saveTaxesDTO) {
+
+		CompletableFuture<Travel> cf1 = CompletableFuture.supplyAsync(() -> {
+			QTravel travel = new QTravel("travel");
+			Predicate byOrderNumber = travel.orderNumber.eq(saveTaxesDTO.getOrderNumber()).and(travel.status.eq(TravelStatus.APROVED));
+			Optional<Travel> travelExist = repository.findOne(byOrderNumber);
+			if(!travelExist.isPresent()) throw  new NotFoundException("El viaje no fue aprobado");
+			travelExist.get().setWhitingTime(saveTaxesDTO.getWhitingTime());
+			travelExist.get().setToll(saveTaxesDTO.getToll());
+			travelExist.get().setParkingAmount(saveTaxesDTO.getParkingAmount());
+			travelExist.get().setTaxForReturn(saveTaxesDTO.getTaxForReturn());
+			repository.save(travelExist.get());
+			return travelExist.get();
+		});
+
+		return cf1;
 	}
 
 }
