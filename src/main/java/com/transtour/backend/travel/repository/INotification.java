@@ -1,5 +1,6 @@
 package com.transtour.backend.travel.repository;
 
+import com.transtour.backend.travel.dto.MailRequestDTO;
 import com.transtour.backend.travel.dto.TravelNotificationMobileDTO;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -17,4 +18,7 @@ public interface INotification {
 
     @RequestMapping(method=RequestMethod.POST,value = "/v1/notification/sendMessageMobile")
     Void sendNotificationMobile(@RequestBody TravelNotificationMobileDTO travelNotificationMobileDto);
+
+    @RequestMapping(method=RequestMethod.POST,value = "/v1/notification/sendingEmail")
+    Void sendNotificationV2(@RequestBody MailRequestDTO mailRequestDTO);
 }
