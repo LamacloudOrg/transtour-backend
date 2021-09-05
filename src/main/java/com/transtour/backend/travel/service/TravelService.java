@@ -2,6 +2,7 @@ package com.transtour.backend.travel.service;
 
 import com.github.dozermapper.core.Mapper;
 import com.querydsl.core.types.Predicate;
+import com.transtour.backend.travel.dto.MailRequestDTO;
 import com.transtour.backend.travel.dto.TravelNotificationMobileDTO;
 import com.transtour.backend.travel.dto.TravelDto;
 import com.transtour.backend.travel.dto.SaveTaxesDTO;
@@ -59,16 +60,16 @@ public class TravelService {
 	}
 
 	public CompletableFuture<Object> create(TravelDto travelDto) throws Exception {
-		CompletableFuture<String> completableFuture = CompletableFuture.supplyAsync(() -> {
+		CompletableFuture<Travel> completableFuture = CompletableFuture.supplyAsync(() -> {
 			return createTravel(travelDto);
 		});
 
-		CompletableFuture<Object> notified = completableFuture.thenApply(s-> sendNotification(s));
+		CompletableFuture<Object> notified = completableFuture.thenApply(s-> sendNotificationV2(s));
 		return notified;
 	}
 
 	@Transactional
-	private String createTravel(TravelDto travelDto){
+	private Travel createTravel(TravelDto travelDto){
 		QTravel travel = new QTravel("travel");
 
 		//TODO ojo la logica de negocio, puede haber mas de un viaje para un mismo lugar de origen, destino, fecha, hoora, puede ser un contingente.
@@ -80,7 +81,7 @@ public class TravelService {
 		newTravel.setStatus(TravelStatus.CREATED);
 		repository.save(newTravel);
 
-		return newTravel.getOrderNumber() + "-" + "se creo el viaje para el cofher " + travelDto.getCarDriver();
+		return newTravel;
 	}
 
 	public CompletableFuture<TravelDto> find(String orderNumber) throws Exception {
@@ -98,11 +99,11 @@ public class TravelService {
 	}
 
 	//@HystrixCommand(fallbackMethod = "notificationError",commandKey="test")
-	public CompletableFuture<Void> sendNotification(String message){
+	public CompletableFuture<Void> sendNotificationV2(Travel travel){
 
 		CompletableFuture<Void> completableFuture = CompletableFuture.runAsync(
 				()->{
-					notificationClient.sendNotification(message.split("-")[1]);			}
+					notificationClient.sendNotificationV2(mapperEmail(travel));			}
 		);
 		return completableFuture;
 	}
@@ -213,4 +214,20 @@ public class TravelService {
 		return cf1;
 	}
 
+	public MailRequestDTO mapperEmail (Travel travel) {
+		MailRequestDTO mail = new MailRequestDTO();
+		mail.setSignature("TransTour");
+		mail.setLocation("Capital Federal");
+		mail.setTo("cnlaffitte@gmail.com ; pomalianni@gmail.com");
+		mail.setFrom("pomalianni@gmail.com");
+
+		mail.setOrigin(travel.getOriginAddress());
+		mail.setDestiny(travel.getDestinyAddress());
+		mail.setDriver(travel.getCarDriver());
+		mail.setDate(travel.getDateCreated().toString());
+		mail.setTime(travel.getTime().toString());
+		mail.setPassenger(travel.getPassenger());
+		mail.setObservation(travel.getObservation());
+		return mail;
+	}
 }
