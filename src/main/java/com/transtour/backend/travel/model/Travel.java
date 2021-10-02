@@ -21,7 +21,8 @@ public class Travel implements Serializable {
 	private TravelStatus status;
 	private LocalDate dateCreated;
 	private String car;
-	private String carDriver;
+	private String carDriver; // Aca va el dni
+	private String carDriverName;  // Aca va el nombre del chofer
 	private LocalTime time;
 	private String company;
 	private String bc;

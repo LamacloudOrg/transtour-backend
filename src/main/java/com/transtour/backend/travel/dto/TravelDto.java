@@ -15,7 +15,8 @@ public class TravelDto {
 	private String orderNumber;
 	private LocalDate dateCreated;
 	private String car;
-	private String carDriver;
+	private String carDriver; // Aca va el DNI
+	private String carDriverName;  // Aca va el nombre del chofer
 	private LocalTime time;
 	private String company;
 	private String bc;
