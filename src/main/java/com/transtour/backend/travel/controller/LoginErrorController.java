@@ -11,14 +11,14 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
 @RestController
-@RequestMapping(path = "/v1/LoginError")
+@RequestMapping(path = "/v1/loginerror")
 @CrossOrigin("*")
 public class LoginErrorController {
 
     @Autowired
     ErrorService service;
 
-    @PostMapping("/insertError")
+    @PostMapping("/insert")
     public CompletableFuture<ResponseEntity> insert (@RequestBody ErrorDTO error) throws Exception {
         return service.insert(error).thenApply(handlerTraverlCreation);
     }
