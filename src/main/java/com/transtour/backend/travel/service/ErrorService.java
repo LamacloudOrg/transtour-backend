@@ -18,7 +18,7 @@ import java.util.concurrent.CompletableFuture;
 @Service
 public class ErrorService {
 
-    private static Logger log = LoggerFactory.getLogger(TravelService.class);
+    private static Logger log = LoggerFactory.getLogger(ErrorService.class);
 
     @Autowired
     private Mapper mapper;
