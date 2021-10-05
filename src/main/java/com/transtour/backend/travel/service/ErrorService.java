@@ -31,9 +31,10 @@ public class ErrorService {
     public CompletableFuture<LoginError> insert (ErrorDTO errorDTO) {
 
         CompletableFuture<LoginError> cf1 = CompletableFuture.supplyAsync(() -> {
-            LoginError newError = mapper.map(errorDTO, LoginError.class);
-            newError.setTime(LocalTime.now());
-            newError.setDateCreated(LocalDate.now());
+
+            LoginError newError = new LoginError();
+            newError.setTime(LocalTime.now().toString());
+            newError.setDateCreated(LocalDate.now().toString());
             newError.setStackTrace(errorDTO.getStackTrace());
             newError.setRepoName(errorDTO.getRepoName());
             newError.setComment(errorDTO.getComment());

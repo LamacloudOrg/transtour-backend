@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.LocalTime;
 
 @NoArgsConstructor
 @Data
@@ -15,8 +13,8 @@ import java.time.LocalTime;
 @Document("error")
 public class LoginError implements Serializable {
 
-    private LocalDate dateCreated;
-    private LocalTime time;
+    private String dateCreated;
+    private String time;
     private String repoName;
     private String stackTrace;
     private String comment;
