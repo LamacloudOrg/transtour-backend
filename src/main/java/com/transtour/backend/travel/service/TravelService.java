@@ -185,6 +185,13 @@ public class TravelService {
 					data.put(Constants.OBSERVATION, travel.getObservation());
 					data.put(Constants.CAR_DRIVER, travel.getCarDriver());
 
+					data.put(Constants.COMPANY, travel.getCompany());
+					data.put(Constants.NET_AMOUNT, travel.getAmount());
+					data.put(Constants.WAITING_TIME, travel.getWhitingTime());
+					data.put(Constants.TOLL, travel.getToll());
+					data.put(Constants.PARKING_AMOUNT, travel.getParkingAmount());
+					data.put(Constants.TAX_FOR_RETURN, travel.getTaxForReturn());
+
 					travelNotificationMobileDTO.setNotification(notification);
 					travelNotificationMobileDTO.setData(data);
 
