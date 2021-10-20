@@ -84,7 +84,7 @@ public class TravelService {
 		if (travelExist.isPresent()) throw new TravelExistException("el viaje ya existe viaje para esa fecha y hora con el mismo origen y destino para el cofer" +travelDto.getCarDriverName());
 		Travel newTravel = mapper.map(travelDto, Travel.class);
 
-		Predicate findByOrderNumber = travel.orderNumber.eq(travel.orderNumber);
+		Predicate findByOrderNumber = travel.orderNumber.eq(travelDto.getOrderNumber());
 		Optional<Travel> isEditiom = repository.findOne(findByOrderNumber);
 		isEditiom.ifPresent(
 				(travel1)->{
