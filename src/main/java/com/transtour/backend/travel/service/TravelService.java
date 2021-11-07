@@ -72,12 +72,25 @@ public class TravelService {
 	private Travel createTravel(TravelDto travelDto){
 		QTravel travel = new QTravel("travel");
 
-		//TODO ojo la logica de negocio, puede haber mas de un viaje para un mismo lugar de origen, destino, fecha, hoora, puede ser un contingente.
-		Predicate dateAndHour = travel.dateCreated.eq(travelDto.getDateCreated()).and(travel.time.eq(travelDto.getTime()));
 
-		Optional<Travel> travelExist = repository.findOne(dateAndHour);
-		if (travelExist.isPresent()) throw new TravelExistException("el viaje ya existe");
+		//TODO ojo la logica de negocio, puede haber mas de un viaje para un mismo lugar de origen, destino, fecha, hoora, puede ser un contingente.
+		Predicate notExistTravel = travel.dateCreated.eq(travelDto.getDateCreated())
+				.and(travel.time.eq(travelDto.getTime()))
+				.and(travel.carDriver.eq(travelDto.getCarDriver()))
+				.and(travel.destinyAddress.eq(travelDto.getDestinyAddress()))
+				.and(travel.originAddress.eq(travelDto.getOriginAddress()));
+
+		Optional<Travel> travelExist = repository.findOne(notExistTravel);
+		if (travelExist.isPresent()) throw new TravelExistException("el viaje ya existe viaje para esa fecha y hora con el mismo origen y destino para el cofer" +travelDto.getCarDriverName());
 		Travel newTravel = mapper.map(travelDto, Travel.class);
+
+		Predicate findByOrderNumber = travel.orderNumber.eq(travelDto.getOrderNumber());
+		Optional<Travel> isEditiom = repository.findOne(findByOrderNumber);
+		isEditiom.ifPresent(
+				(travel1)->{
+					newTravel.setId(travel1.getId());
+				}
+		);
 		newTravel.setStatus(TravelStatus.CREATED);
 		repository.save(newTravel);
 
@@ -184,6 +197,13 @@ public class TravelService {
 					data.put(Constants.PASSENGER, travel.getPassenger());
 					data.put(Constants.OBSERVATION, travel.getObservation());
 					data.put(Constants.CAR_DRIVER, travel.getCarDriver());
+
+					data.put(Constants.COMPANY, travel.getCompany());
+					data.put(Constants.NET_AMOUNT, travel.getAmount());
+					data.put(Constants.WAITING_TIME, travel.getWhitingTime());
+					data.put(Constants.TOLL, travel.getToll());
+					data.put(Constants.PARKING_AMOUNT, travel.getParkingAmount());
+					data.put(Constants.TAX_FOR_RETURN, travel.getTaxForReturn());
 
 					travelNotificationMobileDTO.setNotification(notification);
 					travelNotificationMobileDTO.setData(data);
