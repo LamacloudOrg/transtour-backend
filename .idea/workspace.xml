@@ -6,9 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="4ee3dedf-150a-4866-9e55-69d2e42df63c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/transtour/backend/travel/dto/ErrorDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/transtour/backend/travel/dto/ErrorDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/transtour/backend/travel/model/LoginError.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/transtour/backend/travel/model/LoginError.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/transtour/backend/travel/service/ErrorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/transtour/backend/travel/service/ErrorService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
