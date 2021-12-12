@@ -238,10 +238,8 @@ public class TravelService {
 		MailRequestDTO mail = new MailRequestDTO();
 		mail.setSignature("TransTour");
 		mail.setLocation("Capital Federal");
-		/*
-		mail.setTo("cnlaffitte@gmail.com ; pomalianni@gmail.com");
-		mail.setFrom("pomalianni@gmail.com");
-		*/
+		mail.setTo("");
+		mail.setFrom("");
 		mail.setOrigin(travel.getOriginAddress());
 		mail.setDestiny(travel.getDestinyAddress());
 		mail.setDriver(travel.getCarDriver());
