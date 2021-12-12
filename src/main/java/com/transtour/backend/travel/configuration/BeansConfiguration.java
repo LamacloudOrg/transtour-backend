@@ -4,6 +4,8 @@ import com.github.dozermapper.core.DozerBeanMapperBuilder;
 import com.github.dozermapper.core.Mapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.validation.Validator;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
@@ -37,6 +39,13 @@ public class BeansConfiguration {
 				.apis(RequestHandlerSelectors.basePackage("com.transtour.backend.travel.controller"))
 				.paths(PathSelectors.any())
 				.build();
+	}
+
+
+	@Bean
+	public Validator getValidator() {
+		LocalValidatorFactoryBean validator = new LocalValidatorFactoryBean();
+		return validator;
 	}
 
 }

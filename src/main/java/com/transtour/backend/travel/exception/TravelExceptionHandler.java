@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @ControllerAdvice
 public class TravelExceptionHandler {
 
-    @ExceptionHandler({ TravelExistException.class })
+    @ExceptionHandler({ TravelExistException.class, InputsRequiredException.class })
     public ResponseEntity badRequest(Exception e){
         ResponseDto response = new ResponseDto();
         response.setCode(HttpStatus.BAD_REQUEST.value());
