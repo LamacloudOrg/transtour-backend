@@ -236,10 +236,6 @@ public class TravelService {
 
 	public MailRequestDTO mapperEmail (Travel travel) {
 		MailRequestDTO mail = new MailRequestDTO();
-		mail.setSignature("TransTour");
-		mail.setLocation("Capital Federal");
-		mail.setTo("");
-		mail.setFrom("");
 		mail.setOrigin(travel.getOriginAddress());
 		mail.setDestiny(travel.getDestinyAddress());
 		mail.setDriver(travel.getCarDriver());
