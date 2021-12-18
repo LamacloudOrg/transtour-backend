@@ -12,7 +12,6 @@ public class AbstractHandler {
     };
 
 
-
     protected static Function<Object, ResponseEntity> handlerFinById = t -> {
         //log.error(String.format("Unable to retrieve user for id: %s", userId), throwable);
         return ResponseEntity.ok().body(t);

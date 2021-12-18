@@ -1,6 +1,7 @@
 package com.transtour.backend.travel.dto;
 
 import lombok.Data;
+
 import java.io.Serializable;
 
 @Data

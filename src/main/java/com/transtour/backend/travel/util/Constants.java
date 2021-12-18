@@ -13,7 +13,7 @@ public class Constants {
     public static final String CAR_DRIVER = "carDriver";
 
     public static final String COMPANY = "company";
-    public static final String NET_AMOUNT = "netAmount" ;
+    public static final String NET_AMOUNT = "netAmount";
     public static final String WAITING_TIME = "waitingTime";
     public static final String TOLL = "toll";
     public static final String PARKING_AMOUNT = "parkingAmount";

@@ -7,18 +7,17 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Qualifier("NotificationClient")
 @FeignClient(name = "SPRING-CLOUD-NOTIFICATION")
 public interface INotification {
 
-    @RequestMapping(method=RequestMethod.POST,value = "/v1/notification/byEmail")
+    @RequestMapping(method = RequestMethod.POST, value = "/v1/notification/byEmail")
     Void sendNotification(@RequestBody String message);
 
-    @RequestMapping(method=RequestMethod.POST,value = "/v1/notification/sendMessageMobile")
+    @RequestMapping(method = RequestMethod.POST, value = "/v1/notification/sendMessageMobile")
     Void sendNotificationMobile(@RequestBody TravelNotificationMobileDTO travelNotificationMobileDto);
 
-    @RequestMapping(method=RequestMethod.POST,value = "/v1/notification/sendingEmail")
+    @RequestMapping(method = RequestMethod.POST, value = "/v1/notification/sendingEmail")
     Void sendNotificationV2(@RequestBody MailRequestDTO mailRequestDTO);
 }

@@ -1,6 +1,5 @@
 package com.transtour.backend.travel.model;
 
-import com.querydsl.core.annotations.QueryEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;

@@ -11,6 +11,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @FeignClient(name = "SPRING-CLOUD-VOUCHER-API")
 public interface IVoucher {
 
-    @RequestMapping(method= RequestMethod.POST,value = "/v1/voucher/create")
+    @RequestMapping(method = RequestMethod.POST, value = "/v1/voucher/create")
     Void createVoucher(@RequestBody Travel travel);
 }

@@ -28,7 +28,7 @@ public class ErrorService {
     private ILoginErrorRepository repository;
 
     @Transactional
-    public CompletableFuture<LoginError> insert (ErrorDTO errorDTO) {
+    public CompletableFuture<LoginError> insert(ErrorDTO errorDTO) {
 
         CompletableFuture<LoginError> cf1 = CompletableFuture.supplyAsync(() -> {
 

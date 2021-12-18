@@ -18,34 +18,34 @@ import java.util.concurrent.TimeUnit;
 
 @Configuration
 public class BeansConfiguration {
-	
-	@Bean
-	public Mapper mapper() {
-		return DozerBeanMapperBuilder.buildDefault();
-	}
 
-	@Bean
-	public ExecutorService executor(){
-		ExecutorService executorService =
-				new ThreadPoolExecutor(1, 1, 0L, TimeUnit.MILLISECONDS,
-						new LinkedBlockingQueue<>());
-		return executorService;
-	}
+    @Bean
+    public Mapper mapper() {
+        return DozerBeanMapperBuilder.buildDefault();
+    }
 
-	@Bean
-	public Docket productApi() {
-		return new Docket(DocumentationType.SWAGGER_2)
-				.select()
-				.apis(RequestHandlerSelectors.basePackage("com.transtour.backend.travel.controller"))
-				.paths(PathSelectors.any())
-				.build();
-	}
+    @Bean
+    public ExecutorService executor() {
+        ExecutorService executorService =
+                new ThreadPoolExecutor(1, 1, 0L, TimeUnit.MILLISECONDS,
+                        new LinkedBlockingQueue<>());
+        return executorService;
+    }
+
+    @Bean
+    public Docket productApi() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.transtour.backend.travel.controller"))
+                .paths(PathSelectors.any())
+                .build();
+    }
 
 
-	@Bean
-	public Validator getValidator() {
-		LocalValidatorFactoryBean validator = new LocalValidatorFactoryBean();
-		return validator;
-	}
+    @Bean
+    public Validator getValidator() {
+        LocalValidatorFactoryBean validator = new LocalValidatorFactoryBean();
+        return validator;
+    }
 
 }

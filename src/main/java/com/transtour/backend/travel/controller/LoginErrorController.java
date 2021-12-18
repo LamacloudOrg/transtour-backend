@@ -19,15 +19,16 @@ public class LoginErrorController {
     ErrorService service;
 
     @PostMapping("/insert")
-    public CompletableFuture<ResponseEntity> insert (@RequestBody ErrorDTO error) throws Exception {
+    public CompletableFuture<ResponseEntity> insert(@RequestBody ErrorDTO error) throws Exception {
         return service.insert(error).thenApply(handlerTraverlCreation);
     }
-    private static Function<Object,ResponseEntity> handlerTraverlCreation = s->{
+
+    private static Function<Object, ResponseEntity> handlerTraverlCreation = s -> {
         //log.error(String.format("Unable to retrieve user for id: %s", userId), throwable);
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     };
 
-    private static Function<Object,ResponseEntity> handlerFinById = t->{
+    private static Function<Object, ResponseEntity> handlerFinById = t -> {
         //log.error(String.format("Unable to retrieve user for id: %s", userId), throwable);
         return ResponseEntity.ok().body(t);
     };
