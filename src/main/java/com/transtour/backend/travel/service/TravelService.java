@@ -6,6 +6,7 @@ import com.transtour.backend.travel.dto.MailRequestDTO;
 import com.transtour.backend.travel.dto.TravelNotificationMobileDTO;
 import com.transtour.backend.travel.dto.TravelDto;
 import com.transtour.backend.travel.dto.SaveTaxesDTO;
+import com.transtour.backend.travel.exception.InputsRequiredException;
 import com.transtour.backend.travel.exception.NotFoundException;
 import com.transtour.backend.travel.exception.TravelExistException;
 import com.transtour.backend.travel.model.QTravel;
@@ -24,6 +25,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -68,8 +70,28 @@ public class TravelService {
 		return notified;
 	}
 
-	@Transactional
-	private Travel createTravel(TravelDto travelDto){
+
+	public CompletableFuture<Object> update(TravelDto travelDto) throws Exception {
+		CompletableFuture<Travel> completableFuture = CompletableFuture.supplyAsync(() -> {
+			return createTravel(travelDto);
+		});
+
+		CompletableFuture<Object> notified = completableFuture.thenApply(s-> sendNotificationV2(s));
+		return notified;
+	}
+
+	public TravelService isOK(TravelDto travel, BindingResult bindingResult){
+	
+			if(bindingResult.hasErrors()){
+				throw new InputsRequiredException(bindingResult.getAllErrors().toString());
+			}
+			if (!this.isUnique(travel)){
+				throw new TravelExistException("el viaje ya existe viaje para esa fecha y hora con el mismo origen y destino para el chofer :" +travel.getCarDriverName());
+			}
+			return this;
+	}
+
+	public boolean isUnique (TravelDto travelDto){
 		QTravel travel = new QTravel("travel");
 
 
@@ -81,23 +103,21 @@ public class TravelService {
 				.and(travel.originAddress.eq(travelDto.getOriginAddress()));
 
 		Optional<Travel> travelExist = repository.findOne(notExistTravel);
-		if (travelExist.isPresent()) throw new TravelExistException("el viaje ya existe viaje para esa fecha y hora con el mismo origen y destino para el cofer" +travelDto.getCarDriverName());
-		Travel newTravel = mapper.map(travelDto, Travel.class);
+		if (travelExist.isPresent())
+			return false;
+		else
+			return true;
+	}
 
-		Predicate findByOrderNumber = travel.orderNumber.eq(travelDto.getOrderNumber());
-		Optional<Travel> isEditiom = repository.findOne(findByOrderNumber);
-		isEditiom.ifPresent(
-				(travel1)->{
-					newTravel.setId(travel1.getId());
-				}
-		);
+	private Travel createTravel(TravelDto travelDto){
+		Travel newTravel = mapper.map(travelDto, Travel.class);
 		newTravel.setStatus(TravelStatus.CREATED);
 		repository.save(newTravel);
 
 		return newTravel;
 	}
 
-	public CompletableFuture<TravelDto> find(String orderNumber) throws Exception {
+	public CompletableFuture<TravelDto> find(Long orderNumber) throws Exception {
 		CompletableFuture<TravelDto> completableFuture  = CompletableFuture.supplyAsync( ()-> {
 
 			QTravel travel = new QTravel("travel");
@@ -141,7 +161,7 @@ public class TravelService {
 		return completableFuture;
 	}
 
-	public CompletableFuture<Travel> aprove(String orderNumber) {
+	public CompletableFuture<Travel> aprove(Long orderNumber) {
 
 		CompletableFuture<Travel> cf1 = CompletableFuture.supplyAsync(() -> {
 			QTravel travel = new QTravel("travel");
@@ -189,7 +209,7 @@ public class TravelService {
 					notification.put(Constants.BODY, Constants.BODY_NEW_MESSAGE);
 
 					Map<String, String> data = new HashMap<>();
-					data.put(Constants.ID, travel.getOrderNumber());
+					data.put(Constants.ID, String.valueOf(travel.getOrderNumber()));
 					data.put(Constants.ORIGIN, travel.getOriginAddress());
 					data.put(Constants.DESTINY, travel.getDestinyAddress());
 					data.put(Constants.TIME, travel.getTime().toString());
@@ -220,7 +240,7 @@ public class TravelService {
 
 		CompletableFuture<Travel> cf1 = CompletableFuture.supplyAsync(() -> {
 			QTravel travel = new QTravel("travel");
-			Predicate byOrderNumber = travel.orderNumber.eq(saveTaxesDTO.getOrderNumber()).and(travel.status.eq(TravelStatus.APROVED));
+			Predicate byOrderNumber = travel.orderNumber.eq(Long.valueOf(saveTaxesDTO.getOrderNumber())).and(travel.status.eq(TravelStatus.APROVED));
 			Optional<Travel> travelExist = repository.findOne(byOrderNumber);
 			if(!travelExist.isPresent()) throw  new NotFoundException("El viaje no fue aprobado");
 			travelExist.get().setWhitingTime(saveTaxesDTO.getWhitingTime());

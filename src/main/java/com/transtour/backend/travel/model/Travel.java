@@ -1,23 +1,30 @@
 package com.transtour.backend.travel.model;
 
 import com.querydsl.core.annotations.QueryEntity;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-@NoArgsConstructor
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @QueryEntity
-@Document("travel")
+@Document("travels")
 public class Travel implements Serializable {
+
+	@Transient
+	public static final  String sequenceName = "travel_sequence";
+
 	@Id
-	private String id;
-	private String orderNumber;
+	private Long orderNumber;
 	private TravelStatus status;
 	private LocalDate dateCreated;
 	private String car;
