@@ -16,7 +16,6 @@ import com.transtour.backend.travel.repository.INotification;
 import com.transtour.backend.travel.repository.IVoucher;
 import com.transtour.backend.travel.repository.TravelRepository;
 import com.transtour.backend.travel.util.Constants;
-import com.transtour.backend.travel.util.OrderNumberUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +34,7 @@ import java.util.concurrent.Future;
 @Service
 public class TravelService {
 
-    private static Logger log = LoggerFactory.getLogger(TravelService.class);
+    private static final Logger log = LoggerFactory.getLogger(TravelService.class);
 
     @Autowired
     private Mapper mapper;
@@ -52,15 +51,6 @@ public class TravelService {
     @Qualifier("VoucherClient")
     private IVoucher voucher;
 
-    @Autowired
-    OrderNumberUtil orderNumberUtil;
-
-    public CompletableFuture<Long> generateNumber() {
-        CompletableFuture<Long> completableFuture = CompletableFuture.supplyAsync(() -> {
-            return orderNumberUtil.getNumber();
-        });
-        return completableFuture;
-    }
 
     public CompletableFuture<Object> create(TravelDto travelDto) throws Exception {
         CompletableFuture<Travel> completableFuture = CompletableFuture.supplyAsync(() -> {
@@ -211,15 +201,15 @@ public class TravelService {
                     notification.put(Constants.TITTLE, Constants.TITTLE_NEW_MESSAGE);
                     notification.put(Constants.BODY, Constants.BODY_NEW_MESSAGE);
 
-                    Map<String, String> data = new HashMap<>();
-                    data.put(Constants.ID, String.valueOf(travel.getOrderNumber()));
+                    Map<String, Object> data = new HashMap<>();
+                    data.put(Constants.ID, travel.getOrderNumber());
                     data.put(Constants.ORIGIN, travel.getOriginAddress());
                     data.put(Constants.DESTINY, travel.getDestinyAddress());
                     data.put(Constants.TIME, travel.getTime().toString());
                     data.put(Constants.DATE, travel.getDateCreated().toString());
                     data.put(Constants.PASSENGER, travel.getPassenger());
                     data.put(Constants.OBSERVATION, travel.getObservation());
-                    data.put(Constants.CAR_DRIVER, travel.getCarDriver());
+                    data.put(Constants.CAR_DRIVER, Long.valueOf(travel.getCarDriver()));
 
                     data.put(Constants.COMPANY, travel.getCompany());
                     data.put(Constants.NET_AMOUNT, travel.getAmount());
