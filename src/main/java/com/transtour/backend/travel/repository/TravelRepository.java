@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 @Qualifier("repo")
-public interface TravelRepository extends MongoRepository<Travel, String>, QuerydslPredicateExecutor<Travel> {
+public interface TravelRepository extends MongoRepository<Travel, Long>, QuerydslPredicateExecutor<Travel> {
     //Page<Travel> findByFechaInicio(LocalDate fecha, Pageable pageable);
 
     @Query("{ 'age' : { $gt: ?0, $lt: ?1 } }")
