@@ -12,9 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @FeignClient(name = "SPRING-CLOUD-NOTIFICATION")
 public interface INotification {
 
-    @RequestMapping(method = RequestMethod.POST, value = "/v1/notification/byEmail")
-    Void sendNotification(@RequestBody String message);
-
     @RequestMapping(method = RequestMethod.POST, value = "/v1/notification/sendMessageMobile")
     Void sendNotificationMobile(@RequestBody TravelNotificationMobileDTO travelNotificationMobileDto);
 

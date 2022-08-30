@@ -53,11 +53,18 @@ public class TravelService {
 
 
     public CompletableFuture<Object> create(TravelDto travelDto) throws Exception {
-        CompletableFuture<Travel> completableFuture = CompletableFuture.supplyAsync(() -> {
+        CompletableFuture<Travel> create = CompletableFuture.supplyAsync(() -> {
             return createTravel(travelDto);
         });
 
-        CompletableFuture<Object> notified = completableFuture.thenApply(s -> sendNotificationV2(s));
+        CompletableFuture aprove = null;
+        //solo para kike.
+        if (travelDto.getCarDriver().equals("93479823")) {
+            aprove = create.thenApply((travel -> this.aprove(travel.getOrderNumber())));
+        }
+
+        CompletableFuture<Object> notified = aprove != null ? aprove.thenApply(s -> sendNotificationV2((Travel) s)) : create.thenApply(s -> sendNotificationV2(s));
+        // completableFuture.thenApply(s -> sendNotificationV2(s));
         return notified;
     }
 
