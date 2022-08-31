@@ -15,10 +15,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.xml.bind.DatatypeConverter;
 import java.time.LocalDate;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 
@@ -41,12 +42,12 @@ public class TravelController extends AbstractHandler {
 
     @PostMapping("/create")
     @Transactional
-    public CompletableFuture<ResponseEntity> create(@RequestBody @Valid TravelDto travel, HttpServletRequest request, BindingResult bindingResult) throws Exception {
-        Claims claims = getClaims(request);
+    public CompletableFuture<ResponseEntity> create(@RequestBody @Valid TravelDto travel, @RequestHeader Map<String, String> headers, BindingResult bindingResult) throws Exception {
+        Claims claims = getClaims(headers);
         String userDni = claims.getSubject();
         return service
                 .isOK(travel, bindingResult)
-                .create(setSequence(travel), userDni)
+                .create(setSequence(travel), Optional.of(userDni))
                 .thenApply(handlerTraverlCreation);
     }
 
@@ -90,11 +91,16 @@ public class TravelController extends AbstractHandler {
         return travel;
     }
 
-    private Claims getClaims(HttpServletRequest request) {
-        String jwtToken = request.getHeader("Authorization").replace("Bearer ", "");
-        return Jwts.parser()
-                .setSigningKey(DatatypeConverter.parseBase64Binary("test"))
-                .parseClaimsJws(jwtToken).getBody();
+    private Claims getClaims(Map<String, String> request) {
+        try {
+            String jwtToken = request.getOrDefault("Authorization", "").replace("Bearer ", "");
+            return Jwts.parser()
+                    .setSigningKey(DatatypeConverter.parseBase64Binary("test"))
+                    .parseClaimsJws(jwtToken).getBody();
+
+        } catch (Exception e) {
+            return null;
+        }
     }
 
 }

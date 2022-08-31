@@ -52,15 +52,18 @@ public class TravelService {
     private IVoucher voucher;
 
 
-    public CompletableFuture<Object> create(TravelDto travelDto, String userAuthenticated) throws Exception {
+    public CompletableFuture<Object> create(TravelDto travelDto, Optional<String> userAuthenticated) throws Exception {
         CompletableFuture<Travel> create = CompletableFuture.supplyAsync(() -> {
             return createTravel(travelDto);
         });
 
         CompletableFuture aprove = null;
         //solo para kike.
-        if (userAuthenticated.equals("93479823")) {
-            aprove = create.thenApply((travel -> this.aprove(travel.getOrderNumber())));
+        if (userAuthenticated.isPresent()) {
+            log.info("user authenticated " + userAuthenticated.get().toString());
+            if (userAuthenticated.get().equals("93479823")) {
+                aprove = create.thenApply((travel -> this.aprove(travel.getOrderNumber())));
+            }
         }
 
         CompletableFuture<Object> notified = aprove != null ? aprove.thenApply(s -> sendNotificationV2((Travel) s)) : create.thenApply(s -> sendNotificationV2(s));
