@@ -44,10 +44,9 @@ public class TravelController extends AbstractHandler {
     @Transactional
     public CompletableFuture<ResponseEntity> create(@RequestBody @Valid TravelDto travel, @RequestHeader Map<String, String> headers, BindingResult bindingResult) throws Exception {
         Claims claims = getClaims(headers);
-        String userDni = claims.getSubject();
         return service
                 .isOK(travel, bindingResult)
-                .create(setSequence(travel), Optional.of(userDni))
+                .create(setSequence(travel), Optional.of(claims.getSubject()))
                 .thenApply(handlerTraverlCreation);
     }
 
