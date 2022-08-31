@@ -52,6 +52,18 @@ public class TravelService {
     private IVoucher voucher;
 
 
+    public CompletableFuture<Object> create(TravelDto travelDto) throws Exception {
+        CompletableFuture<Travel> create = CompletableFuture.supplyAsync(() -> {
+            return createTravel(travelDto);
+        });
+
+        CompletableFuture<Object> notified = create.thenApply(s -> sendNotificationV2(s));
+        return notified;
+    }
+
+    /**
+     * no toma header authorization
+     **/
     public CompletableFuture<Object> create(TravelDto travelDto, Optional<String> userAuthenticated) throws Exception {
         CompletableFuture<Travel> create = CompletableFuture.supplyAsync(() -> {
             return createTravel(travelDto);
@@ -65,9 +77,7 @@ public class TravelService {
                 aprove = create.thenApply((travel -> this.aprove(travel.getOrderNumber())));
             }
         }
-
         CompletableFuture<Object> notified = aprove != null ? aprove.thenApply(s -> sendNotificationV2((Travel) s)) : create.thenApply(s -> sendNotificationV2(s));
-        // completableFuture.thenApply(s -> sendNotificationV2(s));
         return notified;
     }
 

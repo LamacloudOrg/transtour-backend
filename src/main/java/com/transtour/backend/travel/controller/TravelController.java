@@ -44,7 +44,7 @@ public class TravelController extends AbstractHandler {
     }
 
 
-    @PostMapping("/create")
+    @PostMapping("/create/authorize")
     @Transactional
     public CompletableFuture<ResponseEntity> create(@RequestBody @Valid TravelDto travel, @RequestHeader(value = "Authorization", required = false) String jwtToken, BindingResult bindingResult) throws Exception {
         log.info("printing the auth " + jwtToken);
@@ -61,6 +61,17 @@ public class TravelController extends AbstractHandler {
                 .create(setSequence(travel), Optional.ofNullable(userDni))
                 .thenApply(handlerTraverlCreation);
     }
+
+    @PostMapping("/create")
+    @Transactional
+    public CompletableFuture<ResponseEntity> create(@RequestBody @Valid TravelDto travel, BindingResult bindingResult) throws Exception {
+        log.info("creando viaje");
+        return service
+                .isOK(travel, bindingResult)
+                .create(setSequence(travel))
+                .thenApply(handlerTraverlCreation);
+    }
+
 
     @PutMapping("/update")
     public CompletableFuture<ResponseEntity> update(@RequestBody TravelDto travel) throws Exception {
