@@ -46,10 +46,10 @@ public class TravelController extends AbstractHandler {
 
     @PostMapping("/create")
     @Transactional
-    public CompletableFuture<ResponseEntity> create(@RequestBody @Valid TravelDto travel, @RequestHeader String authorization, BindingResult bindingResult) throws Exception {
-        log.info("printing the auth " + authorization);
+    public CompletableFuture<ResponseEntity> create(@RequestBody @Valid TravelDto travel, @RequestHeader(value = "Authorization", required = false) String jwtToken, BindingResult bindingResult) throws Exception {
+        log.info("printing the auth " + jwtToken);
 
-        Optional<Claims> claims = getClaims(authorization);
+        Optional<Claims> claims = getClaims(jwtToken);
         String userDni = null;
         if (claims.isPresent()) {
             Claims claims_ = claims.get();
