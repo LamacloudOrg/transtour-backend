@@ -5,6 +5,8 @@ import com.transtour.backend.travel.dto.TravelDto;
 import com.transtour.backend.travel.model.Travel;
 import com.transtour.backend.travel.service.SequenceGeneratorService;
 import com.transtour.backend.travel.service.TravelService;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -13,7 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.xml.bind.DatatypeConverter;
 import java.time.LocalDate;
 import java.util.concurrent.CompletableFuture;
 
@@ -37,10 +41,12 @@ public class TravelController extends AbstractHandler {
 
     @PostMapping("/create")
     @Transactional
-    public CompletableFuture<ResponseEntity> create(@RequestBody @Valid TravelDto travel, BindingResult bindingResult) throws Exception {
+    public CompletableFuture<ResponseEntity> create(@RequestBody @Valid TravelDto travel, HttpServletRequest request, BindingResult bindingResult) throws Exception {
+        Claims claims = getClaims(request);
+        String userDni = claims.getSubject();
         return service
                 .isOK(travel, bindingResult)
-                .create(setSequence(travel))
+                .create(setSequence(travel), userDni)
                 .thenApply(handlerTraverlCreation);
     }
 
@@ -84,6 +90,11 @@ public class TravelController extends AbstractHandler {
         return travel;
     }
 
-    ;
+    private Claims getClaims(HttpServletRequest request) {
+        String jwtToken = request.getHeader("Authorization").replace("Bearer ", "");
+        return Jwts.parser()
+                .setSigningKey(DatatypeConverter.parseBase64Binary("test"))
+                .parseClaimsJws(jwtToken).getBody();
+    }
 
 }
