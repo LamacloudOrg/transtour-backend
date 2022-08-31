@@ -7,6 +7,8 @@ import com.transtour.backend.travel.service.SequenceGeneratorService;
 import com.transtour.backend.travel.service.TravelService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -28,6 +30,9 @@ import java.util.concurrent.CompletableFuture;
 @CrossOrigin("*")
 public class TravelController extends AbstractHandler {
 
+    private static final Logger log = LoggerFactory.getLogger(TravelController.class);
+
+
     @Autowired
     TravelService service;
 
@@ -43,10 +48,16 @@ public class TravelController extends AbstractHandler {
     @PostMapping("/create")
     @Transactional
     public CompletableFuture<ResponseEntity> create(@RequestBody @Valid TravelDto travel, @RequestHeader Map<String, String> headers, BindingResult bindingResult) throws Exception {
-        Claims claims = getClaims(headers);
+        Optional<Claims> claims = getClaims(headers);
+        String userDni = null;
+        if (claims.isPresent()) {
+            Claims claims_ = claims.get();
+            userDni = claims_.getSubject();
+            log.info(userDni);
+        }
         return service
                 .isOK(travel, bindingResult)
-                .create(setSequence(travel), Optional.of(claims.getSubject()))
+                .create(setSequence(travel), Optional.ofNullable(userDni))
                 .thenApply(handlerTraverlCreation);
     }
 
@@ -90,14 +101,16 @@ public class TravelController extends AbstractHandler {
         return travel;
     }
 
-    private Claims getClaims(Map<String, String> request) {
+    private Optional<Claims> getClaims(Map<String, String> request) {
         try {
             String jwtToken = request.getOrDefault("Authorization", "").replace("Bearer ", "");
-            return Jwts.parser()
+            log.info("token :" + jwtToken);
+            return Optional.of(Jwts.parser()
                     .setSigningKey(DatatypeConverter.parseBase64Binary("test"))
-                    .parseClaimsJws(jwtToken).getBody();
+                    .parseClaimsJws(jwtToken).getBody());
 
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
