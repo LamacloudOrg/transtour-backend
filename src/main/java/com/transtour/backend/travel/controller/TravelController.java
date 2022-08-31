@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.xml.bind.DatatypeConverter;
 import java.time.LocalDate;
-import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
@@ -47,8 +46,10 @@ public class TravelController extends AbstractHandler {
 
     @PostMapping("/create")
     @Transactional
-    public CompletableFuture<ResponseEntity> create(@RequestBody @Valid TravelDto travel, @RequestHeader Map<String, String> headers, BindingResult bindingResult) throws Exception {
-        Optional<Claims> claims = getClaims(headers);
+    public CompletableFuture<ResponseEntity> create(@RequestBody @Valid TravelDto travel, @RequestHeader String authorization, BindingResult bindingResult) throws Exception {
+        log.info("printing the auth " + authorization);
+
+        Optional<Claims> claims = getClaims(authorization);
         String userDni = null;
         if (claims.isPresent()) {
             Claims claims_ = claims.get();
@@ -101,9 +102,9 @@ public class TravelController extends AbstractHandler {
         return travel;
     }
 
-    private Optional<Claims> getClaims(Map<String, String> request) {
+    private Optional<Claims> getClaims(String jwtToken) {
         try {
-            String jwtToken = request.getOrDefault("Authorization", "").replace("Bearer ", "");
+
             log.info("token :" + jwtToken);
             return Optional.of(Jwts.parser()
                     .setSigningKey(DatatypeConverter.parseBase64Binary("test"))
