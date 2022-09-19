@@ -28,6 +28,7 @@ import org.springframework.validation.BindingResult;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 
@@ -214,6 +215,8 @@ public class TravelService {
     private CompletableFuture<Void> sendNotification(Travel travel) {
         CompletableFuture<Void> completableFuture = CompletableFuture.runAsync(
                 () -> {
+                    final String uuid = UUID.randomUUID().toString();
+
                     TravelNotificationMobileDTO travelNotificationMobileDTO = new TravelNotificationMobileDTO();
                     travelNotificationMobileDTO.setTo("");
 
@@ -222,7 +225,9 @@ public class TravelService {
                     notification.put(Constants.BODY, Constants.BODY_NEW_MESSAGE);
 
                     Map<String, Object> data = new HashMap<>();
-                    data.put(Constants.ID, travel.getOrderNumber());
+                    data.put(Constants.ID, uuid);
+                    data.put(Constants.ORDER_NUMBER, travel.getOrderNumber());
+                    data.put(Constants.STATUS, travel.getStatus());
                     data.put(Constants.ORIGIN, travel.getOriginAddress());
                     data.put(Constants.DESTINY, travel.getDestinyAddress());
                     data.put(Constants.TIME, travel.getTime().toString());

@@ -1,7 +1,10 @@
 package com.transtour.backend.travel.util;
 
 public class Constants {
+
     public static final String ID = "id";
+    public static final String ORDER_NUMBER = "orderNumber";
+    public static final String STATUS = "status";
     public static final String TITTLE = "title";
     public static final String BODY = "body";
     public static final String ORIGIN = "origin";
