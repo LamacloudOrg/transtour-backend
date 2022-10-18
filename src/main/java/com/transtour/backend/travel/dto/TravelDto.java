@@ -38,7 +38,10 @@ public class TravelDto {
     private String bc;
     @NotNull
     @NotEmpty
-    private String passenger;
+    private String passengerName;
+    @NotNull
+    @NotEmpty
+    private String passengerEmail;
     @NotNull
     @NotEmpty
     private String reserveNumber;
