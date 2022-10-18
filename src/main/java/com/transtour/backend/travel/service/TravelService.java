@@ -232,7 +232,8 @@ public class TravelService {
                     data.put(Constants.DESTINY, travel.getDestinyAddress());
                     data.put(Constants.TIME, travel.getTime().toString());
                     data.put(Constants.DATE, travel.getDateCreated().toString());
-                    data.put(Constants.PASSENGER, travel.getPassenger());
+                    data.put(Constants.PASSENGER_NAME, travel.getPassengerName());
+                    data.put(Constants.PASSENGER_EMAIL, travel.getPassengerEmail());
                     data.put(Constants.OBSERVATION, travel.getObservation());
                     data.put(Constants.CAR_DRIVER, Long.valueOf(travel.getCarDriver()));
 
@@ -279,7 +280,7 @@ public class TravelService {
         mail.setDriver(travel.getCarDriver());
         mail.setDate(travel.getDateCreated().toString());
         mail.setTime(travel.getTime().toString());
-        mail.setPassenger(travel.getPassenger());
+        mail.setPassengerName(travel.getPassengerName());
         mail.setObservation(travel.getObservation());
         return mail;
     }

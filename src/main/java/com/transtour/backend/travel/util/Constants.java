@@ -11,7 +11,8 @@ public class Constants {
     public static final String DESTINY = "destiny";
     public static final String TIME = "time";
     public static final String DATE = "date";
-    public static final String PASSENGER = "passenger";
+    public static final String PASSENGER_NAME = "passengerName";
+    public static final String PASSENGER_EMAIL = "passengerEmail";
     public static final String OBSERVATION = "observation";
     public static final String CAR_DRIVER = "carDriver";
 
