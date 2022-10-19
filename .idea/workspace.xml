@@ -5,8 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4ee3dedf-150a-4866-9e55-69d2e42df63c" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/modules/travel.test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/travel.test.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -210,6 +210,14 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Gradle.transtour-backend [bootRun]" />
+      <item itemvalue="Gradle.transtour-backend [build]" />
+      <item itemvalue="Gradle.transtour-backend [clean]" />
+      <item itemvalue="Gradle.transtour-backend-travel [assemble]" />
+      <item itemvalue="Gradle.transtour-backend-travel [compileJava]" />
+      <item itemvalue="Gradle.transtour-backend-travel [jar]" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.transtour-backend-travel [assemble]" />
