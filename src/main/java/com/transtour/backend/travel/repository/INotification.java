@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Qualifier("NotificationClient")
-@FeignClient(name = "SPRING-CLOUD-NOTIFICATION")
+@FeignClient(name = "SPRING-CLOUD-NOTIFICATION-API")
 public interface INotification {
 
     @RequestMapping(method = RequestMethod.POST, value = "/v1/notification/sendMessageMobile")
